@@ -1,7 +1,7 @@
 export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'scope-enum': [1, 'always', ['web', 'admin']], // (scope) 限定
+    'scope-enum': [1, 'always', ['shop-web']], // (scope) 限定
     'type-enum': [
       2,
       'always',

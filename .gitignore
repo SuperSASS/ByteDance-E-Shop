@@ -118,5 +118,8 @@ dist
 !.vscode/settings.json
 !.vscode/launch.json
 
+# Husky Cache
+/status
+
 # AI Development
 .agent

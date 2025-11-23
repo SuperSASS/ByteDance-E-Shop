@@ -10,7 +10,8 @@
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "refactor:ui": "node scripts/refactor-ui.cjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
