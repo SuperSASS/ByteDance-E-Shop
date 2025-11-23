@@ -21,6 +21,14 @@ function Home() {
         >
           {t('switch-language')}
         </Button>
+        <div className="flex gap-4">
+          <a href="/login" className="text-blue-500 hover:underline">
+            Go to Login
+          </a>
+          <Button asChild className="text-blue-500 hover:underline">
+            <a href="/profile">Go to Profile (Protected)</a>
+          </Button>
+        </div>
       </div>
     </>
   )
