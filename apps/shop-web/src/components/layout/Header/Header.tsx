@@ -1,112 +1,118 @@
-import { ShoppingBasketIcon, UserRound } from 'lucide-react'
+import { UserRoundIcon, SearchIcon, LogInIcon } from 'lucide-react'
 import type { HeaderProps } from './Header.types'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar'
 import { Skeleton } from '@/components/ui/Skeleton'
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/NavigationMenu'
-import { NavLink } from 'react-router-dom'
+import { Input } from '@/components/ui/Input'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { UserPanel } from '@/components/auth/UserPanel'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { NotificationPopover } from './components/NotificationPopover'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { ThemeToggle } from './components/ThemeToggle'
+import { HeaderLeft } from './components/HeaderLeft'
 import { mockNotifications } from '../fixtures/notifications'
+import useIsMobile from '@/hooks/use-is-mobile'
+import { Button } from '@/components/ui/Button'
+import type { User } from '@/models/User'
+import { Navigations } from '@/config/navigation'
 
 function Header({ className }: HeaderProps) {
-  const { t } = useTranslation('header') // 确保加载了对应的 namespace
+  const { t } = useTranslation('header')
+  const { t: t_nav } = useTranslation('nav')
+  const { isMobile } = useIsMobile()
+  const location = useLocation()
   const user = useAuthStore((state) => state.user)
   const handleLogout = useAuthStore((state) => state.logout)
 
   return (
-    <header className={cn('flex h-16 items-center justify-between border-b px-6 py-2', className)}>
-      {/* 左侧 - Logo + 导航*/}
-      <div className="flex items-center gap-2">
-        <ShoppingBasketIcon color="#33b0e6" />{' '}
-        {/* TODO: [Lv.2] 这里定死了颜色，后续更改为主题色相关方式 */}
-        <h1> {t('title')} </h1>
-        <nav>
-          {/* TODO: [Lv.2] 重构为对象存储，动态生成，而不是写死 */}
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuLink>
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      cn(navigationMenuTriggerStyle(), isActive && 'font-bold')
-                    }
-                  >
-                    {t('home')}
-                  </NavLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink>
-                  <NavLink
-                    to="/profile"
-                    className={({ isActive }) =>
-                      cn(navigationMenuTriggerStyle(), isActive && 'font-bold')
-                    }
-                  >
-                    {t('products')}
-                  </NavLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink>
-                  <NavLink
-                    to="/orders"
-                    className={({ isActive }) =>
-                      cn(navigationMenuTriggerStyle(), isActive && 'font-bold')
-                    }
-                  >
-                    {t('orders')}
-                  </NavLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </nav>
-      </div>
+    <header
+      className={cn(
+        'bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur', // 毛玻璃样式
+        'sticky top-0 z-50 w-full border-b',
+        className
+      )}
+    >
+      {/* 采用 relative，使得中间部分绝对居中 */}
+      <div className="relative flex h-16 items-center justify-between px-4 py-2 md:px-6">
+        {/* 左侧 - Logo + 导航*/}
+        <HeaderLeft />
 
-      {/* 中间 - 搜索栏 */}
-      <div className="flex items-center gap-2">
-        {/* TODO: [Lv.1] 优化样式 */}
-        <input type="text" placeholder={t('search')} />
-      </div>
+        {/* 中间 - 搜索栏 / 标题 */}
+        <div
+          className={cn(
+            'absolute top-1/2 left-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4', // 绝对居中
+            'flex flex-1 items-center justify-end px-0 md:justify-center md:px-10'
+          )}
+        >
+          {/* 宽度足够：自适应长度（根据页面宽度 - 左右两侧宽度决定） */}
+          <div className="relative mx-auto w-full max-w-sm">
+            {/* 移动端: 页面标题 */}
+            {isMobile ? (
+              <span className="text-lg font-semibold">
+                {t_nav(Navigations.find((n) => n.to === location.pathname)?.id || 'home')}
+              </span>
+            ) : (
+              <>
+                {/* Desktop: Adaptive Search */}
+                {/* Show Input on large screens (lg and up) */}
+                <div className="relative hidden w-full lg:block">
+                  <SearchIcon className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
+                  <Input
+                    type="search"
+                    placeholder={t('search')}
+                    className="bg-background w-full pl-8"
+                  />
+                </div>
 
-      {/* 右侧 - 状态按钮 + 用户 */}
-      <div className="flex items-center gap-2">
-        {/* TODO: [Lv.2]现在是 mock 数据 */}
-        <NotificationPopover notifications={mockNotifications} />
-        <LanguageSwitcher />
-        <ThemeToggle />
-        <UserPanel
-          user={user}
-          trigger={
-            // 按状态显示头像
-            <Avatar>
-              {user?.avatar && <AvatarImage src={user.avatar} />}
-              <AvatarFallback>
-                {!user ? (
-                  <UserRound className="h-6 w-6" />
-                ) : user.avatar ? (
-                  <Skeleton className="h-full w-full rounded-full" />
-                ) : (
-                  user.name?.slice(0, 2).toUpperCase() || <UserRound className="h-6 w-6" />
-                )}
-              </AvatarFallback>
-            </Avatar>
-          }
-          onLogout={handleLogout}
-        />
+                {/* Show Icon Button on medium screens (md to lg) where space is tight */}
+                <div className="hidden justify-center md:flex lg:hidden">
+                  <Button variant="outline" size="icon" aria-label={t('search')}>
+                    <SearchIcon className="h-5 w-5" />
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* 右侧 - 状态按钮 + 用户 */}
+        <div className="flex items-center gap-2">
+          {/* 移动端不展示 */}
+          {!isMobile && (
+            <div className="hidden items-center gap-2 md:flex">
+              <NotificationPopover notifications={mockNotifications} />
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
+          )}
+
+          {user ? (
+            <UserPanel
+              user={user}
+              trigger={
+                <Avatar className="h-8 w-8 cursor-pointer transition-opacity hover:opacity-80">
+                  <AvatarImage src={user.avatar} />
+                  <AvatarFallback>
+                    {user.avatar ? (
+                      <Skeleton className="h-full w-full rounded-full" />
+                    ) : (
+                      user.name?.slice(0, 1).toUpperCase() || <UserRoundIcon className="h-4 w-4" />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+              }
+              onLogout={handleLogout}
+            />
+          ) : (
+            <NavLink to="/login">
+              <Button variant="outline" size="icon" aria-label="Login">
+                <LogInIcon />
+              </Button>
+            </NavLink>
+          )}
+        </div>
       </div>
     </header>
   )

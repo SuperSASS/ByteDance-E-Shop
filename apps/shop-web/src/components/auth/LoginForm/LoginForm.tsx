@@ -26,7 +26,7 @@ export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <Card className="overflow-hidden p-0">
+      <Card className="border-border/50 overflow-hidden p-0 shadow-lg">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
@@ -46,7 +46,7 @@ export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">{t('password')}</FieldLabel>
                   {/* TODO: [Lv.3] 忘记密码实现 */}
                   <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
                     {t('forgotPassword')}
@@ -87,11 +87,7 @@ export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
+            <div className="from-primary to-primary/60 absolute inset-0 h-full w-full bg-gradient-to-br" />
           </div>
         </CardContent>
       </Card>

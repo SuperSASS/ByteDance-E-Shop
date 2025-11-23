@@ -56,7 +56,7 @@ export function NotificationPopover({ notifications }: NotificationPopoverProps)
             </div>
           ) : (
             <div className="text-muted-foreground flex h-[150px] items-center justify-center text-sm">
-              {t('notification.noNotifications')}
+              {t('notification.empty')}
             </div>
           )}
         </ScrollArea>

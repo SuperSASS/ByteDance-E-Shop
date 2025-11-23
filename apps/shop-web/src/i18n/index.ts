@@ -11,18 +11,22 @@ const resources = {
       count: '当前计数：{{anb}}',
       switchLanguage: '切换到英文',
     },
-    header: {
-      title: '轻舟商城',
+    nav: {
       home: '首页',
       products: '商品',
       orders: '订单',
-      search: '搜索',
+    },
+    header: {
+      title: '轻舟商城',
+      search: '搜索产品或订单',
     },
     login: {
       welcome: '欢迎回来！',
       description: '登录以开始您的购物之旅。',
-      forgotPassword: '忘记密码？',
       login: '登录',
+      email: '邮箱',
+      password: '密码',
+      forgotPassword: '忘记密码？',
       oauth: '或者使用',
       oauths: {
         apple: 'Apple',
@@ -30,6 +34,7 @@ const resources = {
       },
       noAccount: '没有账号？',
       signUp: '立刻注册！',
+      // TODO: [Lv.3] 这里怎么实现超链接，下同
       serviceAgreement: '点击继续，表示您同意我们的服务协议和隐私政策。',
     },
     user: {
@@ -40,10 +45,11 @@ const resources = {
         title: '通知',
         unread: '{{count}}条未读',
         viewAll: '查看全部',
-        noNotifications: '没有通知',
+        empty: '没有通知',
       },
     },
-    settings: {
+    sr: {
+      toggleMenu: '展开菜单',
       toggleTheme: '切换主题',
     },
   },
@@ -53,18 +59,22 @@ const resources = {
       count: 'Count is {{anb}}',
       switchLanguage: 'Switch to Chinese',
     },
-    header: {
-      title: 'CockleBoat Store',
+    nav: {
       home: 'Home',
       products: 'Products',
       orders: 'Orders',
-      search: 'Search',
+    },
+    header: {
+      title: 'CockleBoat Store',
+      search: 'Search products or orders',
     },
     login: {
       welcome: 'Welcome back!',
       description: 'Login to start your shopping journey.',
       forgotPassword: 'Forgot password?',
       login: 'Login',
+      email: 'Email',
+      password: 'Password',
       oauth: 'Or use',
       oauths: {
         apple: 'Apple',
@@ -72,7 +82,6 @@ const resources = {
       },
       noAccount: "Don't have an account?",
       signUp: 'Sign up now!',
-      // TODO: 这里怎么实现超链接
       serviceAgreement:
         'By clicking continue, you agree to our Terms of Service and Privacy Policy.',
     },
@@ -84,10 +93,11 @@ const resources = {
         title: 'Notification',
         unread: '{{count}} unread',
         viewAll: 'View All',
-        noNotifications: 'No notifications',
+        empty: 'No notifications',
       },
     },
-    settings: {
+    sr: {
+      toggleMenu: 'Toggle Menu',
       toggleTheme: 'Toggle Theme',
     },
   },
