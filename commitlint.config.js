@@ -13,10 +13,11 @@ export default {
         'refactor',
         'test',
         'perf',
-        'chore',
         'ci',
         'build',
         'revert',
+        'script',
+        'chore',
       ],
     ], // (type) 限定
   },
