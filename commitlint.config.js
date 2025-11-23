@@ -13,6 +13,7 @@ export default {
         'refactor',
         'test',
         'perf',
+        'i18n',
         'ci',
         'build',
         'revert',
