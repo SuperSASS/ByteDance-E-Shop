@@ -15,7 +15,6 @@ import { HeaderLeft } from './components/HeaderLeft'
 import { mockNotifications } from '../fixtures/notifications'
 import useIsMobile from '@/hooks/use-is-mobile'
 import { Button } from '@/components/ui/Button'
-import type { User } from '@/models/User'
 import { Navigations } from '@/config/navigation'
 
 function Header({ className }: HeaderProps) {
@@ -106,11 +105,11 @@ function Header({ className }: HeaderProps) {
               onLogout={handleLogout}
             />
           ) : (
-            <NavLink to="/login">
-              <Button variant="outline" size="icon" aria-label="Login">
+            <Button variant="outline" size="icon" asChild>
+              <NavLink to="/login" aria-label="Login">
                 <LogInIcon />
-              </Button>
-            </NavLink>
+              </NavLink>
+            </Button>
           )}
         </div>
       </div>

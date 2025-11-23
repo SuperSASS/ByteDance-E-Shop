@@ -1,7 +1,7 @@
 import { Menu, ShoppingBasketIcon } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader } from '@/components/ui/Sheet'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import useIsMobile from '@/hooks/use-is-mobile'
@@ -22,6 +22,7 @@ export function HeaderLeft() {
   const { t: t_sr } = useTranslation('sr')
   const { t: t_nav } = useTranslation('nav')
   const { isMobile } = useIsMobile()
+  const location = useLocation()
 
   const CompanyInfo = () => (
     <div className="text-primary flex items-center gap-2 text-xl font-bold">
@@ -64,24 +65,30 @@ export function HeaderLeft() {
     </div>
   ) : (
     // 桌面端
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-5">
       <CompanyInfo />
       <NavigationMenu viewport={isMobile}>
         <NavigationMenuList>
-          {Navigations.map((item) => (
-            <NavigationMenuItem key={item.id}>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    cn(isActive && 'bg-accent text-accent-foreground font-bold')
-                  }
-                >
-                  {t_nav(item.id)}
-                </NavLink>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          ))}
+          {Navigations.map((item) => {
+            const isActive = location.pathname === item.to
+
+            return (
+              <NavigationMenuItem key={item.id}>
+                <NavigationMenuLink asChild>
+                  <NavLink
+                    to={item.to}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      'text-lg',
+                      isActive && 'border-primary font-bold shadow-md'
+                    )} // 注：不能用 NavLink 的 isActive。因为这里函数式的 className 无法与上层 asChild 的字符串式的 className 合并。
+                  >
+                    {t_nav(item.id)}
+                  </NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            )
+          })}
         </NavigationMenuList>
       </NavigationMenu>
     </div>
