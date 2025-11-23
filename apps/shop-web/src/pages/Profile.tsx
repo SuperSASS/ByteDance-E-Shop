@@ -1,5 +1,5 @@
+import { Button } from '@/components/ui/Button'
 import { useAuthStore } from '../stores/useAuthStore'
-import { Button } from '../components/ui/button/button'
 
 export default function Profile() {
   const user = useAuthStore((state) => state.user)
