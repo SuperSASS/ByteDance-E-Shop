@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation('product')
   const currentLang = (
     i18n.language in product.name ? i18n.language : 'zh'
   ) as keyof typeof product.name
@@ -37,7 +37,7 @@ export function ProductCard({ product }: ProductCardProps) {
               key={tag}
               className={cn('border-none px-1.5 py-0.5 text-[10px] text-white', getTagColor(tag))}
             >
-              {tag}
+              {t(`tags.${tag}`)}
             </Badge>
           ))}
         </div>
@@ -69,7 +69,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           <span className="text-muted-foreground text-xs">
             {
-              t('product.sold', {
+              t('sold', {
                 count: product.sales > 1000 ? '1k+' : product.sales,
               } as any) as string
             }
