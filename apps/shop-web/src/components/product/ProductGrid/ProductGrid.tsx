@@ -1,5 +1,6 @@
 import { ProductCard } from '../ProductCard'
 import type { ProductDTO } from '@e-shop/shared'
+import { useTranslation } from 'react-i18next'
 
 interface ProductGridProps {
   products: ProductDTO[]
@@ -7,6 +8,8 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, isLoading }: ProductGridProps) {
+  const { t } = useTranslation('product')
+
   if (isLoading) {
     // TODO: [Lv.2] 更改为 Spinner 组件形式
     return (
@@ -23,7 +26,7 @@ export function ProductGrid({ products, isLoading }: ProductGridProps) {
     // TODO: [Lv.3] 更改为 Empty 组件形式
     return (
       <div className="text-muted-foreground flex h-96 items-center justify-center">
-        <p>No products found</p>
+        <p>{t('noProducts')}</p>
       </div>
     )
   }

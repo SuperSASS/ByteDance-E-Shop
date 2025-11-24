@@ -87,7 +87,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex w-full gap-2">
           <Button className="h-9 flex-1 gap-2 text-xs font-medium" size="sm">
             <ShoppingCartIcon className="h-3.5 w-3.5" />
-            {t('product.addToCart')}
+            {t('addToCart')}
           </Button>
           <Button size="icon" variant="outline" className="h-9 w-9 shrink-0">
             <HeartIcon className="h-4 w-4" />
