@@ -37,6 +37,6 @@ describe('MainLayout', () => {
 
     // Check for main content area classes
     const main = container.querySelector('main')
-    expect(main).toHaveClass('flex-1', 'overflow-hidden')
+    expect(main).toHaveClass('bg-muted/40', 'flex-1', 'overflow-auto')
   })
 })

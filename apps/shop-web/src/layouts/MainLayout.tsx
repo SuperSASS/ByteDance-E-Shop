@@ -5,7 +5,7 @@ function MainLayout() {
   return (
     <div className="flex h-screen flex-col">
       <Header />
-      <main className="bg-muted/40 flex-1 overflow-hidden">
+      <main className="bg-muted/40 flex-1 overflow-auto">
         <div className="mx-auto h-full w-full max-w-screen-2xl p-4 md:p-6">
           <Outlet />
         </div>
