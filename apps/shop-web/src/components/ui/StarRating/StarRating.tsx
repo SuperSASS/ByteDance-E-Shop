@@ -7,6 +7,7 @@ export function StarRating({
   value,
   onChange,
   max = 5,
+  readOnly = false,
   className,
   iconClassName,
 }: StarRatingProps) {
@@ -15,6 +16,7 @@ export function StarRating({
   const displayValue = hoverValue !== null ? hoverValue : value
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    if (readOnly) return
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left
     const isHalf = x < rect.width / 2
@@ -22,6 +24,7 @@ export function StarRating({
   }
 
   const handleClick = (index: number, isHalf: boolean) => {
+    if (readOnly || !onChange) return
     onChange(index + (isHalf ? 0.5 : 1))
   }
 
@@ -36,7 +39,7 @@ export function StarRating({
             key={index}
             role="button"
             aria-label={`${index + 1} stars`}
-            className="relative cursor-pointer p-0.5"
+            className={cn('relative p-0.5', !readOnly && 'cursor-pointer')}
             onMouseMove={(e) => handleMouseMove(e, index)}
             onClick={(e) => {
               const rect = e.currentTarget.getBoundingClientRect()

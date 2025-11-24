@@ -6,6 +6,7 @@ import { HeartIcon, ShoppingCartIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 import { getTagColor } from './ProductCard.util'
+import { StarRating } from '@/components/ui/StarRating'
 
 interface ProductCardProps {
   product: ProductDTO
@@ -52,6 +53,12 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
             {product.description[currentLang]}
           </p>
+        </div>
+
+        {/* Rating */}
+        <div className="mt-2 flex items-center gap-1">
+          <StarRating value={product.rating} readOnly iconClassName="h-3.5 w-3.5" />
+          <span className="text-muted-foreground text-xs">({product.rating.toFixed(1)})</span>
         </div>
       </CardContent>
 
