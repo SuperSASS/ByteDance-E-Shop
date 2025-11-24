@@ -15,20 +15,32 @@ import { useEffect, useState } from 'react'
 import { productService } from '@/services/productService'
 import type { ProductDTO } from '@e-shop/shared'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/Pagination/Pagination'
+import { generatePageNumbers } from '@/utils/generatePageNumbers'
 
 export default function ProductPage() {
   const { t } = useTranslation('product')
   const { t: t_nav } = useTranslation('nav')
+  const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState<ProductDTO[]>([])
   const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(0)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(12)
   const [isLoading, setIsLoading] = useState(true)
 
   const loadData = async () => {
     setIsLoading(true)
     try {
-      const response = await productService.getProducts({})
+      const response = await productService.getProducts(searchParams)
       setTotal(response.total)
       setPage(response.page)
       setPageSize(response.pageSize)
@@ -42,7 +54,16 @@ export default function ProductPage() {
   // TODO: [Lv.2] 采用 React Query 管理数据？
   useEffect(() => {
     loadData()
-  }, [])
+  }, [searchParams])
+
+  const handlePageChange = (newPage: number) => {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('page', newPage.toString())
+    setSearchParams(newParams)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const totalPages = Math.ceil(total / pageSize)
 
   return (
     <div className="container py-6">
@@ -92,6 +113,59 @@ export default function ProductPage() {
           </div>
 
           <ProductGrid products={products} isLoading={isLoading} />
+
+          {/* Pagination */}
+          {!isLoading && totalPages > 1 && (
+            <div className="mt-8">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (page > 1) handlePageChange(page - 1) // 上一页
+                      }}
+                      className={page <= 1 ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+
+                  {/* Page Numbers Logic */}
+                  {generatePageNumbers(totalPages, page).map((item) =>
+                    typeof item === 'string' ? (
+                      <PaginationItem key={item}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    ) : (
+                      <PaginationItem key={item}>
+                        <PaginationLink
+                          href="#"
+                          isActive={page === item}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handlePageChange(item) // 跳转到指定页码
+                          }}
+                        >
+                          {item}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (page < totalPages) handlePageChange(page + 1) // 下一页
+                      }}
+                      className={page >= totalPages ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       </div>
     </div>
