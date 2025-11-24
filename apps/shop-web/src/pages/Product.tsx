@@ -20,20 +20,27 @@ export default function ProductPage() {
   const { t } = useTranslation('product')
   const { t: t_nav } = useTranslation('nav')
   const [products, setProducts] = useState<ProductDTO[]>([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+
+  const loadData = async () => {
+    setIsLoading(true)
+    try {
+      const response = await productService.getProducts({})
+      setTotal(response.total)
+      setPage(response.page)
+      setPageSize(response.pageSize)
+      setProducts(response.items)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // 加载数据
   // TODO: [Lv.2] 采用 React Query 管理数据？
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true)
-      try {
-        const response = await productService.getProducts({})
-        setProducts(response.items)
-      } finally {
-        setIsLoading(false)
-      }
-    }
     loadData()
   }, [])
 
@@ -76,7 +83,11 @@ export default function ProductPage() {
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold">{t('allProducts')}</h1>
             <div className="text-muted-foreground text-sm">
-              {t('showingResults', { begin: 1, end: products.length })}
+              {t('showingResults', {
+                begin: (page - 1) * pageSize + 1,
+                end: page * pageSize,
+                total,
+              })}
             </div>
           </div>
 
