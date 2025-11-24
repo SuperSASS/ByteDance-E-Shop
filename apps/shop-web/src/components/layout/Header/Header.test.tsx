@@ -23,16 +23,16 @@ vi.mock('@/stores/useAuthStore', () => ({
 }))
 
 // Mock sub-components to isolate Header logic
-vi.mock('./components/HeaderLeft', () => ({
+vi.mock('@/components/layout/HeaderLeft', () => ({
   HeaderLeft: () => <div data-testid="header-left">HeaderLeft</div>,
 }))
-vi.mock('./components/NotificationPopover', () => ({
+vi.mock('@/components/layout/NotificationPopover', () => ({
   NotificationPopover: () => <div data-testid="notification-popover">Notifications</div>,
 }))
-vi.mock('./components/LanguageSwitcher', () => ({
+vi.mock('@/components/layout/LanguageSwitcher', () => ({
   LanguageSwitcher: () => <div data-testid="language-switcher">Lang</div>,
 }))
-vi.mock('./components/ThemeToggle', () => ({
+vi.mock('@/components/layout/ThemeToggle', () => ({
   ThemeToggle: () => <div data-testid="theme-toggle">Theme</div>,
 }))
 vi.mock('@/components/auth/UserPanel', () => ({

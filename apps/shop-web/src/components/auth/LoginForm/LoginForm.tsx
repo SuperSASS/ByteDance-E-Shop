@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/Field'
 import { Input } from '@/components/ui/Input'
 import { useTranslation } from 'react-i18next'
-import type { LoginFormProps } from './LoginFrom.type'
+import type { LoginFormProps } from './LoginForm.type'
 
 // TODO: [Lv.3] 确认密码的安全性
 export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
