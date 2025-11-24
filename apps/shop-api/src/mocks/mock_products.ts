@@ -79,9 +79,10 @@ export const generateProducts = (count: number): ProductEntity[] => {
         en: fakerEN.commerce.productDescription(),
       },
       price: price,
-      originalPrice: faker.datatype.boolean()
-        ? price * faker.helpers.arrayElement([1.2, 1.4, 1.6])
-        : undefined,
+      originalPrice:
+        faker.number.float() < 0.2
+          ? price * faker.helpers.arrayElement([1.2, 1.4, 1.6])
+          : undefined,
       rating: faker.number.float({ min: 3, max: 5, fractionDigits: 1 }),
       sales: faker.number.int({ min: 0, max: 2000 }),
       image: faker.image.url(),

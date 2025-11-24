@@ -37,6 +37,8 @@ export default function ProductPage() {
   const [pageSize, setPageSize] = useState(12)
   const [isLoading, setIsLoading] = useState(true)
 
+  const totalPages = Math.ceil(total / pageSize)
+
   const loadData = async () => {
     setIsLoading(true)
     try {
@@ -50,8 +52,8 @@ export default function ProductPage() {
     }
   }
 
-  // 加载数据
-  // TODO: [Lv.2] 采用 React Query 管理数据？
+  // 当 searchParams 变化时加载数据
+  // 原理：筛选条件改变 -> searchParams 变化（在 FilterSidebar 中 setSearchParams） -> loadData 加载筛选后的数据
   useEffect(() => {
     loadData()
   }, [searchParams])
@@ -60,10 +62,8 @@ export default function ProductPage() {
     const newParams = new URLSearchParams(searchParams)
     newParams.set('page', newPage.toString())
     setSearchParams(newParams)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // TODO: [Lv.1] 这个有问题，没作用
   }
-
-  const totalPages = Math.ceil(total / pageSize)
 
   return (
     <div className="container py-6">
