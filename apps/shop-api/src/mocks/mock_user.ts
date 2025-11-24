@@ -4,7 +4,7 @@ import { UserEntity } from '../models/user'
 faker.seed(123)
 
 export const generateUsers = (count: number): UserEntity[] => {
-  let id = 1
+  let id = 100
   return Array.from({ length: count }).map(() => {
     return {
       id: id++,

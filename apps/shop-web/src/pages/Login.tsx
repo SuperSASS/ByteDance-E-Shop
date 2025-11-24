@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAuthStore } from '../stores/useAuthStore'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { authService } from '@/services/authService'
-import type { Login } from '@/models/Login'
+import type { LoginRequest } from '@e-shop/shared'
 
 export default function Login() {
   const login = useAuthStore((state) => state.login)
@@ -14,7 +14,7 @@ export default function Login() {
 
   const from = location.state?.from?.pathname || '/'
 
-  const handleLogin = async (data: Login) => {
+  const handleLogin = async (data: LoginRequest) => {
     setError(null)
     setIsLoading(true)
 

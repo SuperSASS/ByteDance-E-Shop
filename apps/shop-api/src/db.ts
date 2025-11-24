@@ -6,5 +6,14 @@ import { generateUsers } from './mocks/mock_user'
  */
 export const DB = {
   products: generateProducts(100), // ProductEntity[]
-  users: generateUsers(), // UserEntity[]
+  users: [
+    {
+      id: 1,
+      email: 'admin@admin.com',
+      name: 'Admin User',
+      password: 'admin',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
+    },
+    ...generateUsers(10),
+  ], // UserEntity[]
 }

@@ -17,6 +17,61 @@ const PORT = 3000
 app.use(cors())
 app.use(express.json())
 
+// 请求日志中间件
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString()
+  const startTime = Date.now()
+
+  // 记录请求信息
+  console.log(`${'='.repeat(60)}`)
+  console.log(`📥 [${timestamp}] ${req.method} ${req.path}`)
+
+  if (req.query && Object.keys(req.query).length > 0) {
+    console.log('   Query:', JSON.stringify(req.query, null, 2))
+  }
+
+  if (req.body && Object.keys(req.body).length > 0) {
+    // 隐藏敏感信息（如密码）
+    const sanitizedBody = { ...req.body }
+    if (sanitizedBody.password) {
+      sanitizedBody.password = '***'
+    }
+    console.log('   Body:', JSON.stringify(sanitizedBody, null, 2))
+  }
+
+  // 拦截响应
+  const originalJson = res.json.bind(res)
+  res.json = function (body: any) {
+    const duration = Date.now() - startTime
+    console.log(`📤 Response: ${res.statusCode} (${duration}ms)`)
+
+    // 只在开发环境输出响应体（避免大量数据）
+    if (res.statusCode >= 400) {
+      // 错误响应总是显示
+      console.log('   Error:', JSON.stringify(body, null, 2))
+    } else if (Array.isArray(body)) {
+      console.log(`   Data: Array with ${body.length} items`)
+    } else if (body && typeof body === 'object') {
+      // 成功响应显示简化信息
+      const keys = Object.keys(body)
+      if (keys.includes('items') && keys.includes('total')) {
+        // 列表响应
+        console.log(
+          `   Data: { items: ${body.items?.length || 0}, total: ${body.total}, page: ${body.page} }`
+        )
+      } else {
+        // 其他对象响应
+        console.log(`   Data: { ${keys.slice(0, 5).join(', ')}${keys.length > 5 ? ', ...' : ''} }`)
+      }
+    }
+    console.log('='.repeat(60))
+
+    return originalJson(body)
+  }
+
+  next()
+})
+
 // --- Products API ---
 
 /**
@@ -215,5 +270,30 @@ app.get('/auth/me', (req: express.Request, res: express.Response<UserDTO | AuthE
 })
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
+  console.log('='.repeat(60))
+  console.log('🚀 Server started successfully!')
+  console.log('='.repeat(60))
+  console.log(`📍 Server running at http://localhost:${PORT}`)
+  console.log('\n📊 Database Statistics:')
+  console.log(`   - Products: ${DB.products.length} items`)
+  console.log(`   - Users: ${DB.users.length} users`)
+  console.log('\n👥 Available Test Users:')
+  DB.users.forEach((user, index) => {
+    console.log(`   ${index + 1}. Email: ${user.email}`)
+    console.log(`      Password: ${user.password}`)
+    console.log(`      Name: ${user.name}`)
+  })
+  console.log('\n📦 Product Categories:')
+  const categoryCounts = DB.products.reduce(
+    (acc, p) => {
+      acc[p.mainCategory] = (acc[p.mainCategory] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
+  Object.entries(categoryCounts).forEach(([category, count]) => {
+    console.log(`   - ${category}: ${count} products`)
+  })
+  console.log('\n' + '='.repeat(60))
+  console.log('✅ Ready to accept requests...\n')
 })
