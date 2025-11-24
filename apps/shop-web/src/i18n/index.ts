@@ -6,11 +6,6 @@ import config from './config.json'
 // TODO: 暂时把翻译写在这里，以后会提取到 json 文件
 const resources = {
   [config.languages[0].code]: {
-    translation: {
-      welcome: '你好，世界！',
-      count: '当前计数：{{anb}}',
-      switchLanguage: '切换到英文',
-    },
     nav: {
       home: '首页',
       products: '商品',
@@ -19,6 +14,10 @@ const resources = {
     header: {
       title: '轻舟商城',
       search: '搜索产品或订单',
+    },
+    home: {
+      welcome: '你好！{{name}}',
+      login: '登录',
     },
     login: {
       welcome: '欢迎回来',
@@ -113,13 +112,12 @@ const resources = {
       ratingUp: '{{rating}} 分及以上',
       allRatings: '所有评分',
     },
+    profile: {
+      welcome: '你好！',
+      logout: '退出登录',
+    },
   },
   [config.languages[1].code]: {
-    translation: {
-      welcome: 'Hello World!',
-      count: 'Count is {{anb}}',
-      switchLanguage: 'Switch to Chinese',
-    },
     nav: {
       home: 'Home',
       products: 'Products',
@@ -128,6 +126,10 @@ const resources = {
     header: {
       title: 'CockleBoat Store',
       search: 'Search products or orders',
+    },
+    home: {
+      welcome: 'Hello {{name}}',
+      login: 'Login',
     },
     login: {
       welcome: 'Welcome back',
@@ -220,6 +222,10 @@ const resources = {
       rating: 'Rating',
       ratingUp: '{{rating}} Stars & Up',
       allRatings: 'All Ratings',
+    },
+    profile: {
+      welcome: 'Welcome',
+      logout: 'Logout',
     },
   },
 }

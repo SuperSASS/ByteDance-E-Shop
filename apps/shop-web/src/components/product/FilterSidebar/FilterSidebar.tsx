@@ -28,7 +28,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 import { useCallback } from 'react'
-import { StarRating } from '@/components/ui/StarRatingFilter'
+import { StarRating } from '@/components/ui/StarRating'
 
 const FILTER_CONFIG: Record<
   MainCategory,
@@ -63,6 +63,7 @@ const FILTER_CONFIG: Record<
 export function FilterSidebar() {
   const { t } = useTranslation('product')
   const [searchParams, setSearchParams] = useSearchParams() // 使用 URLSearchParams 管理查询参数
+
   const currentCategory = searchParams.get('category') as MainCategory | null // 所选 MainCategory
   const minRating = Number(searchParams.get('minRating') || 0)
 
