@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader } from '@/components/ui/Sheet'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import useIsMobile from '@/hooks/use-is-mobile'
 import {
   NavigationMenu,

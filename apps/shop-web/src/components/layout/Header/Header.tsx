@@ -1,6 +1,6 @@
 import { UserRoundIcon, SearchIcon, LogInIcon } from 'lucide-react'
 import type { HeaderProps } from './Header.types'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Input } from '@/components/ui/Input'
@@ -12,7 +12,7 @@ import { NotificationPopover } from './components/NotificationPopover'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { ThemeToggle } from './components/ThemeToggle'
 import { HeaderLeft } from './components/HeaderLeft'
-import { mockNotifications } from '../fixtures/notifications'
+import { mockNotifications } from './fixtures/notifications'
 import useIsMobile from '@/hooks/use-is-mobile'
 import { Button } from '@/components/ui/Button'
 import { Navigations } from '@/config/navigation'
@@ -41,7 +41,7 @@ function Header({ className }: HeaderProps) {
         {/* 中间 - 搜索栏 / 标题 */}
         <div
           className={cn(
-            'absolute top-1/2 left-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4', // 绝对居中
+            'absolute top-1/2 left-1/2 max-w-lg -translate-x-1/2 -translate-y-1/2 px-4 md:w-full', // 绝对居中
             'flex flex-1 items-center justify-end px-0 md:justify-center md:px-10'
           )}
         >

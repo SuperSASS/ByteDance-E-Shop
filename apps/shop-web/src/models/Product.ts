@@ -21,7 +21,7 @@ export const PC_GPUS = [
 ] as const
 
 export const PHONE_BRANDS = ['Apple', 'Samsung', 'Google', 'Xiaomi'] as const
-export const PHONE_SERIES = ['Pro', 'Standard', 'Ultra', 'Fold'] as const
+export const PHONE_SERIES = ['Air', 'Pro', 'Ultra', 'Fold'] as const
 export const PHONE_STORAGE = ['128GB', '256GB', '512GB', '1TB'] as const
 
 export const TABLET_BRANDS = ['Apple', 'Samsung', 'Lenovo'] as const
@@ -34,6 +34,8 @@ export const AUDIO_FEATURES = ['Noise Cancelling', 'Standard'] as const
 
 export const ACCESSORY_TYPES = ['Case', 'Charger', 'Cable', 'Keyboard', 'Mouse'] as const
 export const ACCESSORY_COMPATIBILITY = ['Universal', 'Apple', 'USB-C'] as const
+
+export const TAGS = ['New', 'Hot', 'Sale'] as const
 
 export type MainCategory = (typeof MAIN_CATEGORIES)[number]
 
@@ -68,6 +70,9 @@ export type SubCategories = {
 // Helper type to get sub-category keys for a given main category
 export type SubCategoryKeys<T extends MainCategory> = keyof SubCategories[T]
 
+export type Tag = (typeof TAGS)[number]
+
+// i18n
 import config from '@/i18n/config.json'
 
 export type LanguageCode = (typeof config.languages)[number]['code']
@@ -100,7 +105,7 @@ export interface Product {
 export interface ProductFilterParams {
   keyword?: string
   category?: MainCategory
-  tags?: ('New' | 'Hot' | 'Sale')[]
+  tags?: Tag[]
   // 属性筛选（例如，{ cpu: 'Intel i7' }）
   attributes?: Record<string, string>
   minPrice?: number
