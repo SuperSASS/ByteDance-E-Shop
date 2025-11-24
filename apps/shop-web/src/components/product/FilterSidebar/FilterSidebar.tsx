@@ -22,7 +22,7 @@ import {
   TABLET_SIZES,
   TAGS,
   type MainCategory,
-} from '@/models/Product'
+} from '@e-shop/shared'
 import { ChevronRightIcon, XIcon } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

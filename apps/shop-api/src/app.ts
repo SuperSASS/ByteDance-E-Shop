@@ -1,6 +1,15 @@
 import express from 'express'
 import cors from 'cors'
 import { DB } from './db'
+import { toProductDTO, toUserDTO } from './utils'
+import {
+  LoginRequest,
+  LoginResponse,
+  AuthErrorResponse,
+  ProductFilterParams,
+  ProductListResponse,
+  UserDTO,
+} from '@e-shop/shared'
 
 const app = express()
 const PORT = 3000
@@ -36,127 +45,127 @@ app.use(express.json())
  * 1. page (页码)
  * 2. pageSize (每页大小)
  */
-app.get('/products', (req, res) => {
-  let filtered = [...DB.products] // 获取所有商品
-  const {
-    keyword,
-    category,
-    minPrice,
-    maxPrice,
-    minRating,
-    tags,
-    sort,
-    page = '1',
-    pageSize = '12',
-  } = req.query
+app.get(
+  '/products',
+  (req: express.Request<ProductFilterParams>, res: express.Response<ProductListResponse>) => {
+    // 直接从 DB 中获取到所有商品数据
+    const products = [...DB.products] // ProductEntity[]
 
-  // 1. Keyword (商品名称)
-  if (keyword) {
-    const k = String(keyword).toLowerCase()
-    filtered = filtered.filter((p) =>
-      Object.values(p.name).some((v) => v.toLowerCase().includes(k))
-    )
-  }
+    // 转换为 DTO (添加 tags)
+    let items = products.map(toProductDTO)
 
-  // 2. Category
-  if (category) {
-    filtered = filtered.filter((p) => p.mainCategory === category)
-  }
+    const {
+      keyword,
+      category,
+      minPrice,
+      maxPrice,
+      minRating,
+      tags,
+      sort,
+      page = '1',
+      pageSize = '12',
+    } = req.query
 
-  // 3. Price Range
-  if (minPrice) {
-    filtered = filtered.filter((p) => p.price >= Number(minPrice))
-  }
-  if (maxPrice) {
-    filtered = filtered.filter((p) => p.price <= Number(maxPrice))
-  }
+    // 1. Keyword (商品名称)
+    if (keyword) {
+      const k = String(keyword).toLowerCase()
+      items = items.filter((p) => Object.values(p.name).some((v) => v.toLowerCase().includes(k)))
+    }
 
-  // 4. Rating
-  if (minRating) {
-    filtered = filtered.filter((p) => p.rating >= Number(minRating))
-  }
+    // 2. Category
+    if (category) {
+      items = items.filter((p) => p.mainCategory === category)
+    }
 
-  // 5. Tags (New, Hot, Sale)
-  if (tags) {
-    const tagList = Array.isArray(tags) ? tags : [tags]
-    const now = new Date()
-    const oneMonthAgo = new Date(now.setMonth(now.getMonth() - 1))
+    // 3. Price Range
+    if (minPrice) {
+      items = items.filter((p) => p.price >= Number(minPrice))
+    }
+    if (maxPrice) {
+      items = items.filter((p) => p.price <= Number(maxPrice))
+    }
 
-    filtered = filtered.filter((p) => {
-      return tagList.every((tag: any) => {
-        if (tag === 'New') return new Date(p.createdAt) > oneMonthAgo
-        if (tag === 'Hot') return p.sales > 100
-        if (tag === 'Sale') return p.originalPrice && p.originalPrice > p.price
-        return true
-      })
+    // 4. Rating
+    if (minRating) {
+      items = items.filter((p) => p.rating >= Number(minRating))
+    }
+
+    // 5. Tags (New, Hot, Sale) - 在加上 tags 的 ProductDTO 上筛选
+    if (tags) {
+      const tagList = Array.isArray(tags) ? tags : [tags]
+      // 验证并转换为有效的 Tag 类型
+      const validTags = tagList
+        .map((t) => String(t))
+        .filter((t): t is 'New' | 'Hot' | 'Sale' => t === 'New' || t === 'Hot' || t === 'Sale')
+      items = items.filter((p) => validTags.every((tag) => p.tags.includes(tag)))
+    }
+
+    // 6. Dynamic Attributes
+    const knownParams = [
+      'keyword',
+      'category',
+      'minPrice',
+      'maxPrice',
+      'minRating',
+      'sort',
+      'page',
+      'pageSize',
+      'tags',
+    ]
+    Object.keys(req.query).forEach((key) => {
+      if (!knownParams.includes(key)) {
+        const value = req.query[key]
+        if (value) {
+          items = items.filter((p) => (p.attributes as any)[key] === value)
+        }
+      }
     })
-  }
 
-  // 6. Dynamic Attributes
-  // Exclude known query params to find attribute filters
-  const knownParams = [
-    'keyword',
-    'category',
-    'minPrice',
-    'maxPrice',
-    'minRating',
-    'sort',
-    'page',
-    'pageSize',
-    'tags',
-  ]
-  Object.keys(req.query).forEach((key) => {
-    if (!knownParams.includes(key)) {
-      const value = req.query[key]
-      if (value) {
-        filtered = filtered.filter((p) => (p.attributes as any)[key] === value)
+    // 7. Sort
+    if (sort) {
+      switch (sort) {
+        case 'price_asc':
+          items.sort((a, b) => a.price - b.price)
+          break
+        case 'price_desc':
+          items.sort((a, b) => b.price - a.price)
+          break
+        case 'sales_desc':
+          items.sort((a, b) => b.sales - a.sales)
+          break
+        case 'newest':
+          items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          break
+        case 'oldest':
+          items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+          break
       }
     }
-  })
 
-  // 7. Sort
-  if (sort) {
-    switch (sort) {
-      case 'price_asc':
-        filtered.sort((a, b) => a.price - b.price)
-        break
-      case 'price_desc':
-        filtered.sort((a, b) => b.price - a.price)
-        break
-      case 'sales_desc':
-        filtered.sort((a, b) => b.sales - a.sales)
-        break
-      case 'newest':
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        break
-      case 'oldest':
-        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-        break
-    }
+    // 8. Pagination
+    const p = Number(page)
+    const ps = Number(pageSize)
+    const total = items.length
+    const start = (p - 1) * ps
+    const result = items.slice(start, start + ps)
+
+    res.json({
+      items: result,
+      total,
+      page: p,
+      pageSize: ps,
+    })
   }
-
-  // 8. Pagination
-  const p = Number(page) || 1
-  const ps = Number(pageSize) || 12
-  const total = filtered.length
-  const start = (p - 1) * ps
-  const items = filtered.slice(start, start + ps)
-
-  res.json({
-    items,
-    total,
-    page: p,
-    pageSize: ps,
-  })
-})
+)
 
 /**
  * 获取商品详情
  */
 app.get('/products/:id', (req, res) => {
-  const product = DB.products.find((p) => p.id === req.params.id)
-  if (product) {
-    res.json(product)
+  const entity = DB.products.find((p) => p.id === req.params.id)
+  if (entity) {
+    // ✅ 转换为 DTO
+    res.json(toProductDTO(entity))
   } else {
     res.status(404).json({ message: 'Product not found' })
   }
@@ -167,30 +176,36 @@ app.get('/products/:id', (req, res) => {
 /**
  * 登录
  */
-app.post('/auth/login', (req, res) => {
-  const { email, password } = req.body
-  const user = DB.users.find((u) => u.email === email && u.password === password)
+app.post(
+  '/auth/login',
+  (
+    req: express.Request<LoginRequest>,
+    res: express.Response<LoginResponse | AuthErrorResponse>
+  ) => {
+    const { email, password } = req.body
+    const user = DB.users.find((u) => u.email === email && u.password === password)
 
-  if (user) {
-    const { password, ...userWithoutPass } = user
-    res.json({ user: userWithoutPass, token: `mock-jwt-token-${user.id}` }) // 这里 mock 一个 JWT token
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' })
+    if (user) {
+      // 转换为 DTO (移除 password)
+      res.json({ user: toUserDTO(user), token: `mock-jwt-token-${user.id}` })
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' })
+    }
   }
-})
+)
 
 /**
  * 获取当前登录用户信息
  */
-app.get('/auth/me', (req, res) => {
+app.get('/auth/me', (req: express.Request, res: express.Response<UserDTO | AuthErrorResponse>) => {
   // 按照 mock 的 JWT token 进行验证
   const token = req.headers.authorization?.split(' ')[1]
   if (token?.startsWith('mock-jwt-token-')) {
-    const userId = parseInt(token.split('-')[1])
+    const userId = parseInt(token.split('-')[3])
     const user = DB.users.find((u) => u.id === userId)
     if (user) {
-      const { password, ...userWithoutPass } = user
-      res.json(userWithoutPass)
+      // 转换为 DTO
+      res.json(toUserDTO(user))
     } else {
       res.status(401).json({ message: 'Unauthorized' })
     }

@@ -13,13 +13,13 @@ import { ProductGrid } from '@/components/product/ProductGrid'
 import { FilterIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { productService } from '@/services/productService'
-import type { Product } from '@/models/Product'
+import type { ProductDTO } from '@e-shop/shared'
 import { useTranslation } from 'react-i18next'
 
 export default function ProductPage() {
   const { t } = useTranslation('product')
   const { t: t_nav } = useTranslation('nav')
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<ProductDTO[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   // 加载数据

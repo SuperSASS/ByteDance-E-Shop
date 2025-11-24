@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker'
+import { UserEntity } from '../models/user'
 
-export const generateUsers = (count: number) => {
+faker.seed(123)
+
+export const generateUsers = (count: number): UserEntity[] => {
   let id = 1
   return Array.from({ length: count }).map(() => {
     return {

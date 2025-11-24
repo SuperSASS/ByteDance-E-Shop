@@ -1,14 +1,14 @@
-import type { Product } from '@/models/Product'
+import type { ProductDTO } from '@e-shop/shared'
 import { Card, CardContent, CardFooter } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { HeartIcon, ShoppingCartIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
-import { getTags } from './ProductCard.util'
+import { getTagColor } from './ProductCard.util'
 
 interface ProductCardProps {
-  product: Product
+  product: ProductDTO
 }
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -16,8 +16,6 @@ export function ProductCard({ product }: ProductCardProps) {
   const currentLang = (
     i18n.language in product.name ? i18n.language : 'zh'
   ) as keyof typeof product.name
-
-  const tags = getTags(product)
 
   return (
     <Card className="group overflow-hidden border-none shadow-sm transition-all hover:shadow-md">
@@ -34,12 +32,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Tags */}
         <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-          {tags.map((tag) => (
+          {product.tags.map((tag) => (
             <Badge
-              key={tag.label}
-              className={cn('border-none px-1.5 py-0.5 text-[10px] text-white', tag.color)}
+              key={tag}
+              className={cn('border-none px-1.5 py-0.5 text-[10px] text-white', getTagColor(tag))}
             >
-              {tag.label}
+              {tag}
             </Badge>
           ))}
         </div>

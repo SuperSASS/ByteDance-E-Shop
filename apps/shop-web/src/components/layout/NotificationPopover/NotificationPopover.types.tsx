@@ -1,7 +1,13 @@
-import type { Notification } from '@/models/Notification'
+interface Notification {
+  id: number
+  title: string
+  description: string
+  time: string
+  read: boolean
+}
 
 interface NotificationPopoverProps {
   notifications: Notification[]
 }
 
-export type { NotificationPopoverProps }
+export type { Notification, NotificationPopoverProps }

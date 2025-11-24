@@ -1,6 +1,5 @@
 import { faker, fakerEN, fakerZH_CN } from '@faker-js/faker'
 import {
-  type Product,
   type MainCategory,
   type SubCategories,
   MAIN_CATEGORIES,
@@ -19,12 +18,14 @@ import {
   AUDIO_FEATURES,
   ACCESSORY_TYPES,
   ACCESSORY_COMPATIBILITY,
-} from '../../../shop-web/src/models/Product'
+} from '@e-shop/shared'
+import { ProductEntity } from '../models/product'
 
-faker.seed(123)
+fakerEN.seed(123)
+fakerZH_CN.seed(123)
 
 // 根据 mainCategory 随机生成对应 attributes
-const generateAttributes = (category: MainCategory): Product['attributes'] => {
+const generateAttributes = (category: MainCategory): ProductEntity['attributes'] => {
   switch (category) {
     case 'PC':
       return {
@@ -61,8 +62,8 @@ const generateAttributes = (category: MainCategory): Product['attributes'] => {
   }
 }
 
-// 生成 mock 商品数据
-const generateProducts = (count: number): Product[] => {
+// 生成 ProductEntity 数据 (不包含 tags)
+export const generateProducts = (count: number): ProductEntity[] => {
   return Array.from({ length: count }).map(() => {
     const mainCategory = faker.helpers.arrayElement(MAIN_CATEGORIES)
     const price = parseFloat(faker.commerce.price({ min: 20, max: 3000 }))
@@ -92,5 +93,3 @@ const generateProducts = (count: number): Product[] => {
     }
   })
 }
-
-export { generateProducts }

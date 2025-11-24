@@ -1,28 +1,35 @@
-import type { Product } from '@/models/Product'
-import { ProductCard } from '../ProductCard/ProductCard'
-import { useTranslation } from 'react-i18next'
+import { ProductCard } from '../ProductCard'
+import type { ProductDTO } from '@e-shop/shared'
 
 interface ProductGridProps {
-  products: Product[]
+  products: ProductDTO[]
   isLoading?: boolean
 }
 
 export function ProductGrid({ products, isLoading }: ProductGridProps) {
-  const { t } = useTranslation('product')
-
-  // TODO: [Lv.2] 更改为 Spinner 组件形式
   if (isLoading) {
-    return <div>{t('loadingProducts')}</div>
+    // TODO: [Lv.2] 更改为 Spinner 组件形式
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="bg-muted h-96 animate-pulse rounded-lg" />
+        ))}
+      </div>
+    )
   }
 
-  return products.length === 0 ? (
+  if (products.length === 0) {
     // 结果为空
     // TODO: [Lv.3] 更改为 Empty 组件形式
-    <div className="py-12 text-center">
-      <p className="text-muted-foreground text-lg">{t('noProducts')}</p>
-    </div>
-  ) : (
-    // TODO: [Lv. 2] 支持每页展示个数的修改
+    return (
+      <div className="text-muted-foreground flex h-96 items-center justify-center">
+        <p>No products found</p>
+      </div>
+    )
+  }
+
+  // TODO: [Lv. 2] 支持每页展示个数的修改
+  return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />

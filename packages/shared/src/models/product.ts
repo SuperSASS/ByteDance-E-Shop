@@ -1,3 +1,7 @@
+import type { LocalizedString } from '../common/types'
+
+// ==================== 常量定义 ====================
+
 export const MAIN_CATEGORIES = ['PC', 'Phone', 'Tablet', 'Audio', 'Accessories'] as const
 
 export const PC_TYPES = ['Gaming', 'Business', 'Ultrabook', 'Workstation'] as const
@@ -37,6 +41,8 @@ export const ACCESSORY_COMPATIBILITY = ['Universal', 'Apple', 'USB-C'] as const
 
 export const TAGS = ['New', 'Hot', 'Sale'] as const
 
+// ==================== 类型定义 ====================
+
 export type MainCategory = (typeof MAIN_CATEGORIES)[number]
 
 export type SubCategories = {
@@ -67,46 +73,47 @@ export type SubCategories = {
   }
 }
 
-// Helper type to get sub-category keys for a given main category
-export type SubCategoryKeys<T extends MainCategory> = keyof SubCategories[T]
+export type Attributes = SubCategories[MainCategory]
 
 export type Tag = (typeof TAGS)[number]
 
-// i18n
-import config from '@/i18n/config.json'
+// ==================== DTO (API 传输) ====================
 
-export type LanguageCode = (typeof config.languages)[number]['code']
-export type LocalizedString = Record<LanguageCode, string>
-
-// 商品模型
-export interface Product {
+/**
+ * 商品 DTO - API 传输使用
+ * 包含计算后的字段 (如 tags)
+ */
+export interface ProductDTO {
   id: string
-  name: LocalizedString // 名称 (i18n)
-  description: LocalizedString // 描述 (i18n)
-  price: number // 当前价格
-  originalPrice?: number // 原始价格（如果当前为折扣价，则存在该属性）
-  rating: number // 评分
-  sales: number // 销量（当月）
-  image: string // 主图
-  images: string[] // 详情图
-
-  mainCategory: MainCategory // 主类别
+  name: LocalizedString
+  description: LocalizedString
+  price: number
+  originalPrice?: number
+  rating: number
+  sales: number
+  image: string
+  images: string[]
+  mainCategory: MainCategory
   attributes:
     | SubCategories['PC']
     | SubCategories['Phone']
     | SubCategories['Tablet']
     | SubCategories['Audio']
-    | SubCategories['Accessories'] // 主类别下的属性
-
-  createdAt: string // 上架时间
+    | SubCategories['Accessories']
+  stock: number
+  createdAt: string
+  tags: Tag[] // 由后端根据 sales, createdAt, originalPrice 等计算
 }
 
-// 商品筛选参数
+// ==================== Request/Response ====================
+
+/**
+ * 商品筛选参数
+ */
 export interface ProductFilterParams {
   keyword?: string
   category?: MainCategory
   tags?: Tag[]
-  // 属性筛选（例如，{ cpu: 'Intel i7' }）
   attributes?: Record<string, string>
   minPrice?: number
   maxPrice?: number
@@ -116,9 +123,11 @@ export interface ProductFilterParams {
   pageSize?: number
 }
 
-// 商品查询响应
-export interface ProductResponse {
-  items: Product[]
+/**
+ * 商品列表响应
+ */
+export interface ProductListResponse {
+  items: ProductDTO[]
   total: number
   page: number
   pageSize: number
