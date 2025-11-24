@@ -1,20 +1,30 @@
 import { create } from 'zustand'
-import { User } from '../models/User'
+import { persist } from 'zustand/middleware'
+import type { UserDTO } from '@e-shop/shared'
 
 interface AuthState {
-  user: User | null
+  user: UserDTO | null
+  token: string | null
   isAuthenticated: boolean
-  login: (user: User) => void
+  login: (user: UserDTO, token: string) => void
   logout: () => void
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  login: (user: User) => {
-    set({ user: user, isAuthenticated: true })
-  },
-  logout: () => {
-    set({ user: null, isAuthenticated: false })
-  },
-}))
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (user: UserDTO, token: string) => {
+        set({ user, token, isAuthenticated: true })
+      },
+      logout: () => {
+        set({ user: null, token: null, isAuthenticated: false })
+      },
+    }),
+    {
+      name: 'auth-storage', // localStorage key
+    }
+  )
+)

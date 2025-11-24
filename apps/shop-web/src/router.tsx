@@ -22,6 +22,13 @@ export const router = createBrowserRouter([
           </LgoinProtectedRoute>
         ),
       },
+      {
+        path: '/products',
+        async lazy() {
+          const { default: ProductPage } = await import('./pages/Product')
+          return { Component: ProductPage }
+        },
+      },
     ],
   },
   {

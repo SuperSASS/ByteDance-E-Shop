@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import type { LoginFormProps } from './LoginForm.type'
 
 // TODO: [Lv.3] 确认密码的安全性
-export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
+export function LoginForm({ className, onSubmit, error, isLoading, ...props }: LoginFormProps) {
   const { t } = useTranslation('login')
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +34,11 @@ export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
                 <h1 className="text-2xl font-bold">{t('welcome')}</h1>
                 <p className="text-muted-foreground text-balance">{t('description')}</p>
               </div>
+              {error && (
+                <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
+                  {error}
+                </div>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">{t('email')}</FieldLabel>
                 <Input
@@ -55,7 +60,9 @@ export function LoginForm({ className, onSubmit, ...props }: LoginFormProps) {
                 <Input id="password" name="password" type="password" required />
               </Field>
               <Field>
-                <Button type="submit">{t('login')}</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? t('loggingIn') : t('login')}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 {t('oauth')}
