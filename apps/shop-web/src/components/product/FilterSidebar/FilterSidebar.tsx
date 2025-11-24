@@ -73,6 +73,17 @@ export function FilterSidebar() {
 
   const handleCloseCategory = () => {
     // 只保留标签、价格、评分
+    const newParams = new URLSearchParams()
+    const keepKeys = ['keyword', 'minPrice', 'maxPrice', 'minRating', 'sort', 'pageSize', 'tags']
+
+    searchParams.forEach((value, key) => {
+      if (keepKeys.includes(key)) {
+        newParams.append(key, value)
+      }
+    })
+
+    newParams.set('page', '1')
+    setSearchParams(newParams)
   }
 
   return (
