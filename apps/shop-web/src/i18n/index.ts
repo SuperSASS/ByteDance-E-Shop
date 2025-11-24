@@ -109,6 +109,9 @@ const resources = {
         Hot: '热销',
         Sale: '折扣',
       },
+      rating: '评分',
+      ratingUp: '{{rating}} 分及以上',
+      allRatings: '所有评分',
     },
   },
   [config.languages[1].code]: {
@@ -213,6 +216,9 @@ const resources = {
         Hot: 'Hot',
         Sale: 'Sale',
       },
+      rating: 'Rating',
+      ratingUp: '{{rating}} Stars & Up',
+      allRatings: 'All Ratings',
     },
   },
 }
