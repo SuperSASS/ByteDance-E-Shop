@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/Checkbox'
 import {
   ACCESSORY_COMPATIBILITY,
   ACCESSORY_TYPES,
+  ALL_ATTRIBUTES,
   AUDIO_CONNECTIVITY,
   AUDIO_FEATURES,
   AUDIO_TYPES,
@@ -29,36 +30,6 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 import { useCallback } from 'react'
 import { StarRating } from '@/components/ui/StarRating'
-
-const FILTER_CONFIG: Record<
-  MainCategory,
-  { label: string; key: string; options: readonly string[] }[]
-> = {
-  PC: [
-    { label: 'Type', key: 'type', options: PC_TYPES },
-    { label: 'CPU', key: 'cpu', options: PC_CPUS },
-    { label: 'RAM', key: 'ram', options: PC_RAMS },
-  ],
-  Phone: [
-    { label: 'Brand', key: 'brand', options: PHONE_BRANDS },
-    { label: 'Series', key: 'series', options: PHONE_SERIES },
-    { label: 'Storage', key: 'storage', options: PHONE_STORAGE },
-  ],
-  Tablet: [
-    { label: 'Brand', key: 'brand', options: TABLET_BRANDS },
-    { label: 'Size', key: 'size', options: TABLET_SIZES },
-    { label: 'Connectivity', key: 'connectivity', options: TABLET_CONNECTIVITY },
-  ],
-  Audio: [
-    { label: 'Type', key: 'type', options: AUDIO_TYPES },
-    { label: 'Connectivity', key: 'connectivity', options: AUDIO_CONNECTIVITY },
-    { label: 'Features', key: 'features', options: AUDIO_FEATURES },
-  ],
-  Accessories: [
-    { label: 'Type', key: 'type', options: ACCESSORY_TYPES },
-    { label: 'Compatibility', key: 'compatibility', options: ACCESSORY_COMPATIBILITY },
-  ],
-}
 
 export function FilterSidebar() {
   const { t } = useTranslation('product')
@@ -98,6 +69,10 @@ export function FilterSidebar() {
 
   const handleClearFilters = () => {
     setSearchParams({})
+  }
+
+  const handleCloseCategory = () => {
+    // 只保留标签、价格、评分
   }
 
   return (
@@ -155,20 +130,18 @@ export function FilterSidebar() {
                   variant="ghost"
                   size="icon"
                   className="h-6 w-6"
-                  onClick={() => handleUpdateFilter('category', null)}
+                  onClick={() => handleCloseCategory()}
                 >
                   <XIcon className="h-3.5 w-3.5" />
                 </Button>
               </div>
 
-              {FILTER_CONFIG[currentCategory]?.map((filter) => (
-                <div key={filter.key} className="space-y-1.5">
-                  <Label className="text-muted-foreground text-xs">
-                    {t(`categories.${filter.label}`)}
-                  </Label>
+              {Object.entries(ALL_ATTRIBUTES[currentCategory]).map(([key, values]) => (
+                <div key={key} className="space-y-1.5">
+                  <Label className="text-muted-foreground text-xs">{t(`categories.${key}`)}</Label>
                   <div className="flex flex-wrap gap-1">
-                    {filter.options.map((option) => {
-                      const isActive = searchParams.get(filter.key) === option
+                    {values.map((option) => {
+                      const isActive = searchParams.get(key) === option
                       return (
                         <Button
                           key={option}
@@ -178,7 +151,7 @@ export function FilterSidebar() {
                             'h-6 px-2 text-xs',
                             isActive && 'bg-primary/10 text-primary hover:bg-primary/20'
                           )}
-                          onClick={() => handleUpdateFilter(filter.key, isActive ? null : option)}
+                          onClick={() => handleUpdateFilter(key, isActive ? null : option)}
                         >
                           {t(`categories.${option}`, { defaultValue: option })}
                         </Button>

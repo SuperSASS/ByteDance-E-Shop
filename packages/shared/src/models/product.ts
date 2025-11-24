@@ -41,6 +41,35 @@ export const ACCESSORY_COMPATIBILITY = ['Universal', 'Apple', 'USB-C'] as const
 
 export const TAGS = ['New', 'Hot', 'Sale'] as const
 
+// 各大类的各属性汇总
+export const ALL_ATTRIBUTES: Record<MainCategory, Record<string, readonly string[]>> = {
+  PC: {
+    Type: PC_TYPES,
+    CPU: PC_CPUS,
+    RAM: PC_RAMS,
+    GPU: PC_GPUS,
+  },
+  Phone: {
+    Brand: PHONE_BRANDS,
+    Series: PHONE_SERIES,
+    Storage: PHONE_STORAGE,
+  },
+  Tablet: {
+    Brand: TABLET_BRANDS,
+    Size: TABLET_SIZES,
+    Connectivity: TABLET_CONNECTIVITY,
+  },
+  Audio: {
+    Type: AUDIO_TYPES,
+    Connectivity: AUDIO_CONNECTIVITY,
+    Features: AUDIO_FEATURES,
+  },
+  Accessories: {
+    Type: ACCESSORY_TYPES,
+    Compatibility: ACCESSORY_COMPATIBILITY,
+  },
+}
+
 // ==================== 类型定义 ====================
 
 export type MainCategory = (typeof MAIN_CATEGORIES)[number]
@@ -106,22 +135,6 @@ export interface ProductDTO {
 }
 
 // ==================== Request/Response ====================
-
-/**
- * 商品筛选参数
- */
-export interface ProductFilterParams {
-  keyword?: string
-  category?: MainCategory
-  tags?: Tag[]
-  attributes?: Record<string, string>
-  minPrice?: number
-  maxPrice?: number
-  minRating?: number
-  sort?: 'price_asc' | 'price_desc' | 'sales_asc' | 'sales_desc' | 'newest' | 'oldest'
-  page?: number
-  pageSize?: number
-}
 
 /**
  * 商品列表响应
