@@ -21,6 +21,7 @@ A modern, feature-rich e-commerce platform built with React 18, TypeScript, and 
 - 🌍 **Internationalization** - Full i18n support (Chinese & English)
 - 📱 **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 - 🎭 **Loading States** - Skeleton screens and smooth transitions
+- 🚫 **Error Handling** - Global error boundary with user-friendly 404/error pages
 - 🔒 **Authentication** - Complete login/logout flow with mock backend
 
 ### Technical Highlights
@@ -339,6 +340,7 @@ This project is for educational purposes.
 - Tailwind CSS for utility-first styling
 - The React and TypeScript communities
 - ByteDance Engineering Bootcamp Program
+- Google Antigravity & Genimi
 
 ---
 
