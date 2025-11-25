@@ -17,9 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu/DropdownMenu'
-import { useEffect, useState } from 'react'
 import { productService } from '@/services/productService'
-import type { ProductDTO } from '@e-shop/shared'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useOutletContext } from 'react-router-dom'
 import {
@@ -34,6 +32,7 @@ import {
 import { generatePageNumbers } from '@/utils/generatePageNumbers'
 import type { MainLayoutContext } from '@/layouts/MainLayout'
 import useDebounce from '@/hooks/use-debounce'
+import { useQuery } from '@tanstack/react-query'
 
 export default function ProductPage() {
   const { t } = useTranslation('product')
@@ -44,32 +43,19 @@ export default function ProductPage() {
   // 添加防抖：当 URL searchParams 变化时，延迟 500ms 再重新加载数据
   const debouncedSearchParams = useDebounce(searchParams, 500)
 
-  const [products, setProducts] = useState<ProductDTO[]>([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
-  const [isLoading, setIsLoading] = useState(true)
+  // 使用 React Query 获取数据
+  // queryKey 包含 debouncedSearchParams，当其变化时自动重新获取数据
+  const { data, isLoading } = useQuery({
+    queryKey: ['products', debouncedSearchParams.toString()],
+    queryFn: () => productService.getProducts(debouncedSearchParams),
+  })
+
+  const products = data?.items || []
+  const total = data?.total || 0
+  const page = data?.page || 1
+  const pageSize = data?.pageSize || 12
 
   const totalPages = Math.ceil(total / pageSize)
-
-  const loadData = async () => {
-    setIsLoading(true)
-    try {
-      const response = await productService.getProducts(searchParams)
-      setTotal(response.total)
-      setPage(response.page)
-      setPageSize(response.pageSize)
-      setProducts(response.items)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // 当 debouncedSearchParams 变化时加载数据（防抖处理）
-  // 原理：筛选条件改变 -> debouncedSearchParams 变化（在 FilterSidebar 中 setSearchParams） -> loadData 加载筛选后的数据
-  useEffect(() => {
-    loadData()
-  }, [debouncedSearchParams])
 
   const handlePageChange = (newPage: number) => {
     const newParams = new URLSearchParams(searchParams)
