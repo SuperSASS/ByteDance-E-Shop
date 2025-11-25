@@ -32,6 +32,7 @@
 - 🔧 **状态管理** - 使用 Zustand 管理全局状态
 - 🌐 **API 层** - RESTful API 服务，配合 Express 模拟后端
 - 📊 **数据建模** - 前后端共享类型定义
+- ⚡ **性能优化** - 筛选防抖和 React Query 高效数据获取
 
 ## 🏗️ 架构
 
@@ -79,6 +80,7 @@ E-Shop/
 - **UI 库**: shadcn/ui（Radix UI 基础组件 + Tailwind CSS）
 - **路由**: React Router v6
 - **状态管理**: Zustand
+- **服务器状态**: React Query (@tanstack/react-query)
 - **样式**: Tailwind CSS 配合自定义主题
 - **图标**: Lucide React
 - **国际化**: i18next
@@ -206,6 +208,7 @@ pnpm format       # 使用 Prettier 格式化代码
 ### 状态管理策略
 
 - **URL 状态**：筛选、排序、分页（通过 `useSearchParams`）
+- **服务器状态**：数据获取、缓存和竞态处理（通过 `React Query`）
 - **Zustand Store**：身份认证状态、全局 UI 状态
 - **组件状态**：使用 `useState` 的本地 UI 状态
 - **Outlet Context**：布局级别的函数（如 `scrollToTop`）
@@ -308,10 +311,11 @@ GET /auth/me               # 获取当前用户
 - [x] 国际化（i18n）
 - [x] 响应式设计
 - [x] Monorepo 架构
+- [x] 排序功能
+- [x] 筛选防抖与竞态处理
 
 ### 计划中 🚧
 
-- [ ] 排序功能
 - [ ] 购物车功能
 - [ ] 用户收藏/心愿单
 - [ ] 公司首页宣传页

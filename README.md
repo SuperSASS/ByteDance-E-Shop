@@ -32,6 +32,7 @@ A modern, feature-rich e-commerce platform built with React 18, TypeScript, and 
 - 🔧 **State Management** - Zustand for global state
 - 🌐 **API Layer** - RESTful API service with Express mock backend
 - 📊 **Data Modeling** - Shared types between frontend and backend
+- ⚡ **Performance** - Debounced filtering and React Query for efficient data fetching
 
 ## 🏗️ Architecture
 
@@ -79,6 +80,7 @@ E-Shop/
 - **UI Library**: shadcn/ui (Radix UI primitives + Tailwind CSS)
 - **Routing**: React Router v6
 - **State Management**: Zustand
+- **Server State**: React Query (@tanstack/react-query)
 - **Styling**: Tailwind CSS with custom theme
 - **Icons**: Lucide React
 - **Internationalization**: i18next
@@ -203,6 +205,7 @@ The project follows a clean architecture with clear separation of concerns:
 ### State Management Strategy
 
 - **URL State**: Filters, sorting, pagination (via `useSearchParams`)
+- **Server State**: Data fetching, caching, and race condition handling (via `React Query`)
 - **Zustand Store**: Authentication state, global UI state
 - **Component State**: Local UI state with `useState`
 - **Outlet Context**: Layout-level functions (e.g., `scrollToTop`)
@@ -305,10 +308,11 @@ Types:
 - [x] Internationalization (i18n)
 - [x] Responsive design
 - [x] Monorepo architecture
+- [x] Sorting function
+- [x] Debounced filtering & Race condition handling
 
 ### Planned 🚧
 
-- [ ] Sorting function
 - [ ] Shopping cart functionality
 - [ ] User favorites/wishlist
 - [ ] Company Homepage Brochure
