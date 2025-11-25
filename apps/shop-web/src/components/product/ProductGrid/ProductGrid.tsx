@@ -1,14 +1,16 @@
 import type { ProductDTO } from '@e-shop/shared'
 import { ProductCard } from '@/components/product/ProductCard'
 import { ProductCardSkeleton } from '@/components/product/ProductCardSkeleton'
+import { Empty } from '@/components/ui/Empty'
 import { useTranslation } from 'react-i18next'
 
 interface ProductGridProps {
   products: ProductDTO[]
   isLoading?: boolean
+  onResetFilters?: () => void
 }
 
-export function ProductGrid({ products, isLoading }: ProductGridProps) {
+export function ProductGrid({ products, isLoading, onResetFilters }: ProductGridProps) {
   const { t } = useTranslation('product')
 
   // 加载状态，展示骨架屏
@@ -23,12 +25,13 @@ export function ProductGrid({ products, isLoading }: ProductGridProps) {
   }
 
   if (products.length === 0) {
-    // 结果为空
-    // TODO: [Lv.3] 更改为 Empty 组件形式
     return (
-      <div className="text-muted-foreground flex h-96 items-center justify-center">
-        <p>{t('noProducts')}</p>
-      </div>
+      <Empty
+        title={t('noProductsTitle')}
+        description={t('noProductsDescription')}
+        actionLabel={t('resetFilters')}
+        onAction={onResetFilters}
+      />
     )
   }
 

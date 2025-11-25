@@ -74,6 +74,11 @@ export default function ProductPage() {
     scrollToTop()
   }
 
+  const handleResetFilters = () => {
+    setSearchParams({})
+    scrollToTop()
+  }
+
   return (
     <div className="container py-6">
       {/* 面包屑导航 */}
@@ -152,7 +157,11 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <ProductGrid products={products} isLoading={isLoading} />
+          <ProductGrid
+            products={products}
+            isLoading={isLoading}
+            onResetFilters={handleResetFilters}
+          />
 
           {/* Pagination */}
           {!isLoading && totalPages > 1 && (

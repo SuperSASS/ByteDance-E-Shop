@@ -65,6 +65,9 @@ const resources = {
       max: '最高',
       loadingProducts: '加载商品中...',
       noProducts: '没有找到相关商品',
+      noProductsTitle: '没有商品',
+      noProductsDescription: '没有找到符合条件的商品，请调整筛选条件',
+      resetFilters: '重置筛选条件',
       category: '分类',
       categories: {
         PC: '电脑',
@@ -189,6 +192,9 @@ const resources = {
       max: 'Max',
       loadingProducts: 'Loading products...',
       noProducts: 'No products found.',
+      noProductsTitle: 'No Products Found',
+      noProductsDescription: 'No products match your filters. Try adjusting your search criteria.',
+      resetFilters: 'Reset Filters',
       categories: {
         PC: 'PC',
         Phone: 'Phone',
