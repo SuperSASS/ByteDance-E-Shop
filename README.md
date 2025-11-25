@@ -39,7 +39,7 @@ A modern, feature-rich e-commerce platform built with React 18, TypeScript, and 
 
 ### Project Structure
 
-\`\`\`
+```
 E-Shop/
 ├── apps/
 │ ├── shop-web/ # Frontend React application
@@ -69,7 +69,7 @@ E-Shop/
 │ │ └── common/ # Common types
 │ └── package.json
 └── docs/ # Documentation
-\`\`\`
+```
 
 ### Tech Stack
 
@@ -118,20 +118,22 @@ E-Shop/
 ### Installation
 
 1. Clone the repository:
-   \`\`\`bash
+
+   ```bash
    git clone https://github.com/yourusername/E-Shop.git
    cd E-Shop
-   \`\`\`
+   ```
 
 2. Install dependencies:
-   \`\`\`bash
+
+   ```bash
    pnpm install
-   \`\`\`
+   ```
 
 3. Start the development servers:
-   \`\`\`bash
+   ```bash
    pnpm dev
-   \`\`\`
+   ```
 
 This will start:
 
@@ -140,13 +142,13 @@ This will start:
 
 ### Available Scripts
 
-\`\`\`bash
+```bash
 pnpm dev # Start all development servers
 pnpm build # Build all packages for production
 pnpm test # Run tests across all packages
 pnpm lint # Lint all packages
 pnpm format # Format code with Prettier
-\`\`\`
+```
 
 ## 📖 Usage
 
@@ -154,10 +156,10 @@ pnpm format # Format code with Prettier
 
 The mock API provides test accounts for authentication:
 
-\`\`\`
+```
 Email: admin@admin.com
 Password: admin
-\`\`\`
+```
 
 ### Product Categories
 
@@ -235,18 +237,18 @@ All UI components are built on top of Radix UI primitives and styled with Tailwi
 
 ### Endpoints
 
-\`\`\`
+```
 GET /products # Get paginated product list
 GET /products/:id # Get product by ID
 POST /auth/login # User login
 GET /auth/me # Get current user
-\`\`\`
+```
 
 ### Query Parameters
 
 Product list supports extensive filtering:
 
-\`\`\`
+```
 ?page=1 # Page number
 ?pageSize=12 # Items per page
 ?category=PC # Product category
@@ -256,7 +258,7 @@ Product list supports extensive filtering:
 ?tags=New,Hot # Product tags
 ?cpu=Intel i7 # Category-specific attributes
 ?sort=price_asc # Sorting option
-\`\`\`
+```
 
 ## 📝 Contributing
 
@@ -264,13 +266,13 @@ Product list supports extensive filtering:
 
 This project follows [Conventional Commits](https://www.conventionalcommits.org/):
 
-\`\`\`
+```
 <type>(<scope>): <subject>
 
 <body>
 
 <footer>
-\`\`\`
+```
 
 Types:
 
