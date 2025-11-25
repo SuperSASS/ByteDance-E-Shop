@@ -6,7 +6,11 @@ export interface MainLayoutContext {
   scrollToTop: () => void
 }
 
-function MainLayout() {
+interface MainLayoutProps {
+  children?: React.ReactNode
+}
+
+function MainLayout({ children }: MainLayoutProps) {
   const mainRef = useRef<HTMLElement>(null)
 
   const scrollToTop = () => {
@@ -18,7 +22,7 @@ function MainLayout() {
       <Header />
       <main ref={mainRef} className="bg-muted/40 flex-1 overflow-auto">
         <div className="mx-auto flex h-full w-full max-w-screen-2xl justify-center p-4 md:p-6">
-          <Outlet context={{ scrollToTop } satisfies MainLayoutContext} />
+          {children || <Outlet context={{ scrollToTop } satisfies MainLayoutContext} />}
         </div>
       </main>
     </div>

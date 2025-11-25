@@ -19,8 +19,14 @@ const resources = {
       welcome: '你好！{{name}}',
       login: '登录',
     },
+    common: {
+      errorTitle: '出错了！',
+      error404: '页面未找到',
+      errorGeneric: '抱歉，发生了意外错误。',
+      backHome: '返回首页',
+    },
     login: {
-      welcome: '欢迎回来',
+      welcome: '欢迎来到轻舟商城',
       description: '输入您的邮箱和密码以登录您的账户',
       email: '邮箱',
       password: '密码',
@@ -144,6 +150,12 @@ const resources = {
       welcome: 'Hello {{name}}',
       login: 'Login',
     },
+    common: {
+      errorTitle: 'Oops!',
+      error404: 'Page not found',
+      errorGeneric: 'Sorry, an unexpected error has occurred.',
+      backHome: 'Back to Home',
+    },
     login: {
       welcome: 'Welcome back',
       description: 'Enter your email and password to login to your account',
@@ -250,7 +262,7 @@ const resources = {
       },
     },
     profile: {
-      welcome: 'Welcome',
+      welcome: 'Welcome to Cockleboat E-Shop',
       logout: 'Logout',
     },
   },
