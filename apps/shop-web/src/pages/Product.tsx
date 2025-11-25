@@ -109,7 +109,7 @@ export default function ProductPage() {
             <div className="text-muted-foreground text-sm">
               {t('showingResults', {
                 begin: (page - 1) * pageSize + 1,
-                end: page * pageSize,
+                end: Math.min(page * pageSize, total),
                 total,
               })}
             </div>
