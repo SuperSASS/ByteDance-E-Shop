@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { productService } from '@/services/productService'
 import type { ProductDTO } from '@e-shop/shared'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useOutletContext } from 'react-router-dom'
 import {
   Pagination,
   PaginationContent,
@@ -26,11 +26,14 @@ import {
   PaginationPrevious,
 } from '@/components/ui/Pagination/Pagination'
 import { generatePageNumbers } from '@/utils/generatePageNumbers'
+import type { MainLayoutContext } from '@/layouts/MainLayout'
 
 export default function ProductPage() {
   const { t } = useTranslation('product')
   const { t: t_nav } = useTranslation('nav')
   const [searchParams, setSearchParams] = useSearchParams()
+  const { scrollToTop } = useOutletContext<MainLayoutContext>()
+
   const [products, setProducts] = useState<ProductDTO[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -62,7 +65,7 @@ export default function ProductPage() {
     const newParams = new URLSearchParams(searchParams)
     newParams.set('page', newPage.toString())
     setSearchParams(newParams)
-    window.scrollTo({ top: 0, behavior: 'smooth' }) // TODO: [Lv.1] 这个有问题，没作用
+    scrollToTop()
   }
 
   return (
