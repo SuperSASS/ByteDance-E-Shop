@@ -104,8 +104,11 @@ export default function ProductPage() {
 
         {/* 商品展示 */}
         <div className="flex-1">
+          {/* 搜索结果标题栏 */}
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold">{t('allProducts')}</h1>
+            {/* TODO: 在这里加上排序方式 */}
+            <div></div>
             <div className="text-muted-foreground text-sm">
               {t('showingResults', {
                 begin: (page - 1) * pageSize + 1,

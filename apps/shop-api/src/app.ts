@@ -6,7 +6,6 @@ import {
   LoginRequest,
   LoginResponse,
   AuthErrorResponse,
-  ProductFilterParams,
   ProductListResponse,
   UserDTO,
 } from '@e-shop/shared'
