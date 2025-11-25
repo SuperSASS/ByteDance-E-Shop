@@ -204,12 +204,17 @@ app.get(
     const start = (p - 1) * ps
     const result = items.slice(start, start + ps)
 
-    res.json({
-      items: result,
-      total,
-      page: p,
-      pageSize: ps,
-    })
+    // 增加随机延时（0s，1s，5s三种选项）
+    const delay_options = [0, 1000, 5000]
+    const delay = delay_options[Math.floor(Math.random() * delay_options.length)]
+    setTimeout(() => {
+      res.json({
+        items: result,
+        total,
+        page: p,
+        pageSize: ps,
+      })
+    }, delay)
   }
 )
 
