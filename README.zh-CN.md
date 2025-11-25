@@ -1,5 +1,7 @@
 # 🛒 轻舟商城 (Cockleboat E-Shop)
 
+[English Documentation](./README.md)
+
 一个使用 React 18、TypeScript 和现代技术栈构建的功能丰富的电商平台。本项目作为学习平台，用于掌握从架构到部署的现代前端开发实践。
 
 > **轻舟商城** - 仿 Apple Store 和 Google Store 等电商项目的科技产品商店

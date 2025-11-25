@@ -1,5 +1,7 @@
 # 🛒 Cockleboat E-Shop
 
+[中文文档](./README.zh-CN.md)
+
 A modern, feature-rich e-commerce platform built with React 18, TypeScript, and a comprehensive tech stack. This project serves as a learning platform for mastering modern frontend development practices, from architecture to deployment.
 
 > **轻舟商城** - A technology product stores modeled after e-commerce projects like the Apple Store and Google Store
