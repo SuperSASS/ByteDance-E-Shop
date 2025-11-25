@@ -17,7 +17,7 @@ function MainLayout() {
     <div className="flex h-screen flex-col">
       <Header />
       <main ref={mainRef} className="bg-muted/40 flex-1 overflow-auto">
-        <div className="mx-auto h-full w-full max-w-screen-2xl p-4 md:p-6">
+        <div className="mx-auto flex h-full w-full max-w-screen-2xl justify-center p-4 md:p-6">
           <Outlet context={{ scrollToTop } satisfies MainLayoutContext} />
         </div>
       </main>

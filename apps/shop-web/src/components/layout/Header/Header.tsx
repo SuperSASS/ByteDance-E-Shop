@@ -39,14 +39,15 @@ function Header({ className }: HeaderProps) {
         <HeaderLeft />
 
         {/* 中间 - 搜索栏 / 标题 */}
+        {/* 设置 max-w-1/3 防止与长度小时两边重叠，长度大时能自适应调整 */}
         <div
           className={cn(
-            'absolute top-1/2 left-1/2 max-w-lg -translate-x-1/2 -translate-y-1/2 px-4 md:w-full', // 绝对居中
+            'absolute top-1/2 left-1/2 max-w-1/3 -translate-x-1/2 -translate-y-1/2 px-4 md:w-full', // 绝对居中
             'flex flex-1 items-center justify-end px-0 md:justify-center md:px-10'
           )}
         >
-          {/* 宽度足够：自适应长度（根据页面宽度 - 左右两侧宽度决定） */}
-          <div className="relative mx-auto w-full max-w-sm">
+          {/* 宽度足够：设置 max-w-lg 防止过长 */}
+          <div className="relative mx-auto w-full max-w-lg">
             {/* 移动端: 页面标题 */}
             {isMobile ? (
               <span className="text-lg font-semibold">
