@@ -87,10 +87,10 @@ app.use((req, res, next) => {
  *
  * sort排序参数：
  *
- * 1. price_asc (价格升序)
- * 2. price_desc (价格降序)
- * 3. sales_asc (销量升序)
- * 4. sales_desc (销量降序)
+ * 1. sales_desc (销量降序)（默认）
+ * 2. sales_asc (销量升序)
+ * 3. price_desc (价格降序)
+ * 4. price_asc (价格升序)
  * 5. newest (最新)
  * 6. oldest (最旧)
  *
@@ -101,7 +101,7 @@ app.use((req, res, next) => {
  */
 app.get(
   '/products',
-  (req: express.Request<ProductFilterParams>, res: express.Response<ProductListResponse>) => {
+  (req: express.Request<URLSearchParams>, res: express.Response<ProductListResponse>) => {
     // 直接从 DB 中获取到所有商品数据
     const products = [...DB.products] // ProductEntity[]
 
@@ -115,7 +115,7 @@ app.get(
       maxPrice,
       minRating,
       tags,
-      sort,
+      sort = 'sales_desc',
       page = '1',
       pageSize = '12',
     } = req.query
@@ -176,24 +176,25 @@ app.get(
     })
 
     // 7. Sort
-    if (sort) {
-      switch (sort) {
-        case 'price_asc':
-          items.sort((a, b) => a.price - b.price)
-          break
-        case 'price_desc':
-          items.sort((a, b) => b.price - a.price)
-          break
-        case 'sales_desc':
-          items.sort((a, b) => b.sales - a.sales)
-          break
-        case 'newest':
-          items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          break
-        case 'oldest':
-          items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-          break
-      }
+    switch (sort) {
+      case 'sales_desc':
+        items.sort((a, b) => b.sales - a.sales)
+        break
+      case 'sales_asc':
+        items.sort((a, b) => a.sales - b.sales)
+        break
+      case 'price_desc':
+        items.sort((a, b) => b.price - a.price)
+        break
+      case 'price_asc':
+        items.sort((a, b) => a.price - b.price)
+        break
+      case 'newest':
+        items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        break
+      case 'oldest':
+        items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+        break
     }
 
     // 8. Pagination
