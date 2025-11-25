@@ -89,7 +89,7 @@ export default function ProductPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
+      <div className="flex flex-col gap-8 pb-3 lg:flex-row">
         {/* 移动端筛选组件 */}
         <Sheet>
           <SheetTrigger asChild>

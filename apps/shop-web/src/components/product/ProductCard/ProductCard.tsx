@@ -61,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Rating & Release Date */}
-        <div className="flex items-center justify-between gap-1">
+        <div className="flex flex-wrap items-center justify-between gap-1">
           <div className="flex items-center gap-1">
             <StarRating value={product.rating} readOnly iconClassName="h-3.5 w-3.5" />
             <span className="text-muted-foreground text-xs">({product.rating.toFixed(1)})</span>
@@ -95,11 +95,20 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Action Row */}
         <div className="flex w-full gap-2">
-          <Button className="h-9 flex-1 gap-2 text-xs font-medium" size="sm">
+          <Button
+            aria-label="Add to Cart"
+            className="h-9 flex-1 gap-2 text-xs font-medium"
+            size="sm"
+          >
             <ShoppingCartIcon className="h-3.5 w-3.5" />
-            {t('addToCart')}
+            <span className="hidden max-[300px]:block">{t('addToCart')}</span>
           </Button>
-          <Button size="icon" variant="outline" className="h-9 w-9 shrink-0">
+          <Button
+            aria-label="Add to Wishlist"
+            size="icon"
+            variant="outline"
+            className="h-9 w-9 shrink-0"
+          >
             <HeartIcon className="h-4 w-4" />
           </Button>
         </div>

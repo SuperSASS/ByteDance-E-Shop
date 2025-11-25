@@ -33,7 +33,7 @@ export function ProductGrid({ products, isLoading }: ProductGridProps) {
 
   // TODO: [Lv. 2] 支持每页展示个数的修改
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
