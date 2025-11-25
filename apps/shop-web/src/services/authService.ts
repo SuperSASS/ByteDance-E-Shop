@@ -13,7 +13,7 @@ export const authService = {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=UTF8',
       },
       body: JSON.stringify(credentials),
     })
@@ -33,6 +33,7 @@ export const authService = {
     const response = await fetch(`${API_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json; charset=UTF8',
       },
     })
 

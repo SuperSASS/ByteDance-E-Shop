@@ -4,7 +4,11 @@ const API_URL = '/api'
 
 export const productService = {
   async getProducts(params: URLSearchParams): Promise<ProductListResponse> {
-    const response = await fetch(`${API_URL}/products?${params.toString()}`)
+    const response = await fetch(`${API_URL}/products?${params.toString()}`, {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF8',
+      },
+    })
     if (!response.ok) {
       throw new Error('Failed to fetch products')
     }
@@ -12,7 +16,11 @@ export const productService = {
   },
 
   async getProductById(id: string): Promise<ProductDTO | undefined> {
-    const response = await fetch(`${API_URL}/products/${id}`)
+    const response = await fetch(`${API_URL}/products/${id}`, {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF8',
+      },
+    })
     if (!response.ok) {
       return undefined
     }
