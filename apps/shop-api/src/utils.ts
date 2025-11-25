@@ -11,8 +11,8 @@ export function toProductDTO(entity: ProductEntity): ProductDTO {
   const now = new Date()
   const oneMonthAgo = new Date(now.setMonth(now.getMonth() - 1))
 
-  // New: 上架时间 < 1个月
-  if (new Date(entity.createdAt) < oneMonthAgo) {
+  // New: 上架时间在最近 1 个月内
+  if (new Date(entity.createdAt) > oneMonthAgo) {
     tags.push('New')
   }
 
