@@ -54,6 +54,7 @@ const resources = {
     product: {
       addToCart: '加入购物车',
       sold: '已售 {{count}}',
+      createdAt: '{{date}} 发售',
       filters: '筛选',
       reset: '重置',
       allProducts: '所有商品',
@@ -111,6 +112,15 @@ const resources = {
       rating: '评分',
       ratingUp: '{{rating}} 分及以上',
       allRatings: '所有评分',
+      sort: '排序',
+      sorts: {
+        sales_desc: '销量从高到低',
+        sales_asc: '销量从低到高',
+        price_desc: '价格从高到低',
+        price_asc: '价格从低到高',
+        newest: '最新上架',
+        oldest: '最早上架',
+      },
     },
     profile: {
       welcome: '你好！',
@@ -167,6 +177,7 @@ const resources = {
     product: {
       addToCart: 'Add',
       sold: '{{count}} sold',
+      createdAt: '{{date}} released',
       filters: 'Filters',
       allProducts: 'All Products',
       reset: 'Reset',
@@ -222,6 +233,15 @@ const resources = {
       rating: 'Rating',
       ratingUp: '{{rating}} Stars & Up',
       allRatings: 'All Ratings',
+      sort: 'Sort by',
+      sorts: {
+        sales_desc: 'Best Selling',
+        sales_asc: 'Least Selling',
+        price_desc: 'Price: High to Low',
+        price_asc: 'Price: Low to High',
+        newest: 'Newest Arrivals',
+        oldest: 'Oldest Items',
+      },
     },
     profile: {
       welcome: 'Welcome',

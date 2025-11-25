@@ -10,7 +10,13 @@ import {
 } from '@/components/ui/Breadcrumb'
 import { FilterSidebar } from '@/components/product/FilterSidebar'
 import { ProductGrid } from '@/components/product/ProductGrid'
-import { FilterIcon } from 'lucide-react'
+import { ChevronDownIcon, FilterIcon } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/DropdownMenu/DropdownMenu'
 import { useEffect, useState } from 'react'
 import { productService } from '@/services/productService'
 import type { ProductDTO } from '@e-shop/shared'
@@ -105,16 +111,44 @@ export default function ProductPage() {
         {/* 商品展示 */}
         <div className="flex-1">
           {/* 搜索结果标题栏 */}
-          <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold">{t('allProducts')}</h1>
-            {/* TODO: 在这里加上排序方式 */}
-            <div></div>
-            <div className="text-muted-foreground text-sm">
-              {t('showingResults', {
-                begin: (page - 1) * pageSize + 1,
-                end: Math.min(page * pageSize, total),
-                total,
-              })}
+          <div className="items-top mb-6 flex justify-between gap-4">
+            <h1 className="text-2xl font-bold text-nowrap">{t('allProducts')}</h1>
+            <div className="flex flex-wrap items-center justify-end gap-5">
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-sm">{t('sort')}:</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                      {t(`sorts.${searchParams.get('sort') || 'sales_desc'}`)}
+                      <ChevronDownIcon className="h-3.5 w-3.5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {['sales_desc', 'sales_asc', 'price_desc', 'price_asc', 'newest', 'oldest'].map(
+                      (sort) => (
+                        <DropdownMenuItem
+                          key={sort}
+                          onClick={() => {
+                            const newParams = new URLSearchParams(searchParams)
+                            newParams.set('sort', sort)
+                            newParams.set('page', '1') // 重置页码
+                            setSearchParams(newParams)
+                          }}
+                        >
+                          {t(`sorts.${sort}`)}
+                        </DropdownMenuItem>
+                      )
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="text-muted-foreground text-sm">
+                {t('showingResults', {
+                  begin: (page - 1) * pageSize + 1,
+                  end: Math.min(page * pageSize, total),
+                  total,
+                })}
+              </div>
             </div>
           </div>
 
