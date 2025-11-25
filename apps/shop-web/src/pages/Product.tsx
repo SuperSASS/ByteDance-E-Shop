@@ -33,12 +33,16 @@ import {
 } from '@/components/ui/Pagination/Pagination'
 import { generatePageNumbers } from '@/utils/generatePageNumbers'
 import type { MainLayoutContext } from '@/layouts/MainLayout'
+import useDebounce from '@/hooks/use-debounce'
 
 export default function ProductPage() {
   const { t } = useTranslation('product')
   const { t: t_nav } = useTranslation('nav')
   const [searchParams, setSearchParams] = useSearchParams()
   const { scrollToTop } = useOutletContext<MainLayoutContext>()
+
+  // 添加防抖：当 URL searchParams 变化时，延迟 500ms 再重新加载数据
+  const debouncedSearchParams = useDebounce(searchParams, 500)
 
   const [products, setProducts] = useState<ProductDTO[]>([])
   const [total, setTotal] = useState(0)
@@ -61,11 +65,11 @@ export default function ProductPage() {
     }
   }
 
-  // 当 searchParams 变化时加载数据
-  // 原理：筛选条件改变 -> searchParams 变化（在 FilterSidebar 中 setSearchParams） -> loadData 加载筛选后的数据
+  // 当 debouncedSearchParams 变化时加载数据（防抖处理）
+  // 原理：筛选条件改变 -> debouncedSearchParams 变化（在 FilterSidebar 中 setSearchParams） -> loadData 加载筛选后的数据
   useEffect(() => {
     loadData()
-  }, [searchParams])
+  }, [debouncedSearchParams])
 
   const handlePageChange = (newPage: number) => {
     const newParams = new URLSearchParams(searchParams)
