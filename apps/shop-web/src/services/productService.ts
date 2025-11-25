@@ -6,7 +6,7 @@ export const productService = {
   async getProducts(params: URLSearchParams): Promise<ProductListResponse> {
     const response = await fetch(`${API_URL}/products?${params.toString()}`, {
       headers: {
-        'Content-Type': 'application/json; charset=UTF8',
+        'Content-Type': 'application/json; charset=utf-8',
       },
     })
     if (!response.ok) {
@@ -18,7 +18,7 @@ export const productService = {
   async getProductById(id: string): Promise<ProductDTO | undefined> {
     const response = await fetch(`${API_URL}/products/${id}`, {
       headers: {
-        'Content-Type': 'application/json; charset=UTF8',
+        'Content-Type': 'application/json; charset=utf-8',
       },
     })
     if (!response.ok) {
